@@ -1,0 +1,8 @@
+<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:geo="http://www.bushorn.com/camel/geo-service/">
+   <soapenv:Header/>
+   <soapenv:Body>
+      <geo:GeoServiceRequest>
+         <address>Chennai, India</address>
+      </geo:GeoServiceRequest>
+   </soapenv:Body>
+</soapenv:Envelope>

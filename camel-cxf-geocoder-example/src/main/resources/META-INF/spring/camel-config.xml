@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:geo="http://www.bushorn.com/camel/geo-service/"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd ">
+
+	<import resource="beans-config.xml" />
+
+	<camelContext xmlns="http://camel.apache.org/schema/spring" useMDCLogging="true">
+	
+		<!-- future use -->
+		<dataFormats>
+			<xmljson id="xmljson" />
+			<xmljson id="xmljsonWithOptions" forceTopLevelObject="true"
+				trimSpaces="true" rootName="GeoServiceResponse" skipNamespaces="true"
+				removeNamespacePrefixes="true" expandableProperties="d e" />
+				<json id="json" library="Jackson" useList="true" unmarshalTypeName="com.google.code.geocoder.model.GeocodeResponse"/>
+		</dataFormats>
+
+		<route id="geocoder-service-callout">
+			<from uri="cxf:bean:geo-service-endpoint" />
+			
+			<!-- This removes soap envelope - this is not required if cxf dataformat is PAYLOAD -->
+			<setBody><xpath>//geo:GeoServiceRequest</xpath></setBody>
+			<convertBodyTo type="String" />
+			
+			<!-- Setting this header overrides the address configured in geo coder endpoint -->
+			<setHeader headerName="CamelGeoCoderAddress"><xpath resultType="String">//geo:GeoServiceRequest/address/text()</xpath></setHeader>
+			
+			<log message="Geo request body ${body}" />
+			
+			<!-- The hard-coded address will be overridden by CamelGeoCoderAddress -->
+			<to uri="geocoder:address:Paris, France" />
+			
+			<log message=" Geo Coder Response Headers : 
+				CamelGeoCoderStatus: ${header.CamelGeoCoderStatus}
+				CamelGeoCoderAddress:${header.CamelGeoCoderAddress}
+				CamelGeoCoderLat:${header.CamelGeoCoderLat}
+				CamelGeoCoderLng:${header.CamelGeoCoderLng}
+				CamelGeoCoderLatlng:${header.CamelGeoCoderLatlng}
+				CamelGeoCoderCity:${header.CamelGeoCoderCity}
+				CamelGeoCoderRegionCode:${header.CamelGeoCoderRegionCode}
+				CamelGeoCoderRegionName:${header.CamelGeoCoderRegionName}
+				CamelGeoCoderCountryLong:${header.CamelGeoCoderCountryLong}
+				CamelGeoCoderCountryShort:${header.CamelGeoCoderCountryShort} " />
+			 
+			<!-- Future use - for generating complete response -->
+			<!-- <convertBodyTo type="String" />
+			<unmarshal ref="xmljson" />
+			<marshal ref="json"/>
+			<unmarshal ref="json" /> -->
+			
+			<log message="Geo response body ${body}" />
+			
+			<!-- This required as xslt expects a xml element match -->
+			<setBody id="reset-body"><simple>&lt;data/&gt;</simple></setBody>
+			
+			<to uri="xslt:transformation/geo-service-response.xsl" />
+
+			<!-- This xslt adds soap envelope - this is not required if cxf dataformat is PAYLOAD -->
+			<to uri="xslt:transformation/soap-wrapper.xsl" />
+			
+		</route>
+		
+		
+	</camelContext>
+
+</beans>
