@@ -14,23 +14,9 @@ http://127.0.0.1:8181/camel/geo-service/
 
 SOAP Request:
 
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:geo="http://www.bushorn.com/camel/geo-service/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <geo:GeoServiceRequest>
-         <address>Chennai, India</address>
-      </geo:GeoServiceRequest>
-   </soapenv:Body>
-</soapenv:Envelope>
+https://github.com/gnanagurus/camel-guru-projects/blob/master/camel-cxf-geocoder-example/src/test/resources/samples/service-request.xml
 
 SOAP Response:
 
-<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:geo="http://www.bushorn.com/camel/geo-service/">
-   <soapenv:Header/>
-   <soapenv:Body>
-      <GeoServiceResponse>
-         <details>13.0826802,80.27071840000001</details>
-      </GeoServiceResponse>
-   </soapenv:Body>
-</soapenv:Envelope>
+https://github.com/gnanagurus/camel-guru-projects/blob/master/camel-cxf-geocoder-example/src/test/resources/samples/service-response.xml
 
