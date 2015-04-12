@@ -20,3 +20,5 @@ SOAP Response:
 
 https://github.com/gnanagurus/camel-guru-projects/blob/master/camel-cxf-geocoder-example/src/test/resources/samples/service-response.xml
 
+Note: mvn clean install will generate a war file. Just deploy it to your web container. If you want to deploy this project to Karaf/ServiceMix/Fuse please change the packaging to bundle and add maven-bundle-plugin
+
