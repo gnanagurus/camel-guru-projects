@@ -24,16 +24,16 @@
 			<from uri="cxf:bean:geo-service-endpoint" />
 			
 			<!-- This removes soap envelope - this is not required if cxf dataformat is PAYLOAD -->
-			<setBody><xpath>//geo:GeoServiceRequest</xpath></setBody>
+			<setBody id="soap-unwrapper"><xpath>//geo:GeoServiceRequest</xpath></setBody>
 			<convertBodyTo type="String" />
 			
 			<!-- Setting this header overrides the address configured in geo coder endpoint -->
-			<setHeader headerName="CamelGeoCoderAddress"><xpath resultType="String">//geo:GeoServiceRequest/address/text()</xpath></setHeader>
+			<setHeader id="extract-address" headerName="CamelGeoCoderAddress"><xpath resultType="String">//geo:GeoServiceRequest/address/text()</xpath></setHeader>
 			
 			<log message="Geo request body ${body}" />
 			
 			<!-- The hard-coded address will be overridden by CamelGeoCoderAddress -->
-			<to uri="geocoder:address:Paris, France" />
+			<to id="geocoder-servicec-call" uri="geocoder:address:Paris, France" />
 			
 			<log message=" Geo Coder Response Headers : 
 				CamelGeoCoderStatus: ${header.CamelGeoCoderStatus}
@@ -58,10 +58,10 @@
 			<!-- This required as xslt expects a xml element match -->
 			<setBody id="reset-body"><simple>&lt;data/&gt;</simple></setBody>
 			
-			<to uri="xslt:transformation/geo-service-response.xsl" />
+			<to id="service-response-generator" uri="xslt:transformation/geo-service-response.xsl" />
 
 			<!-- This xslt adds soap envelope - this is not required if cxf dataformat is PAYLOAD -->
-			<to uri="xslt:transformation/soap-wrapper.xsl" />
+			<to id="soap-wrapper" uri="xslt:transformation/soap-wrapper.xsl" />
 			
 		</route>
 		

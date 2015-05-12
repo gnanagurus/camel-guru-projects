@@ -192,6 +192,14 @@
 			<artifactId>commons-logging</artifactId>
 			<version>${commons-logging-version}</version>
 		</dependency>
+		
+		<!-- unit testing dependencies -->
+		
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-test-spring</artifactId>
+			<version>${camel-version}</version>
+		</dependency>
 
 		<!-- logging dependencies -->
 		<dependency>
@@ -211,8 +219,7 @@
 			<artifactId>log4j</artifactId>
 			<version>${log4j-version}</version>
 		</dependency>
-
-
+		
 	</dependencies>
 
 	<profiles>
