@@ -38,7 +38,7 @@
 			</plugin>
 		</plugins>
 		<!-- Name of the generated WAR file -->
-		<finalName>raspberry-pi-file-transfer-gateway</finalName>
+		<finalName>geocoder-gateway</finalName>
 	</build>
 
 	<dependencies>
